@@ -734,7 +734,6 @@
                                         <input type="number" id="whatsapp-campaigns-per-week" placeholder="ex : 1" class="w-full px-3 py-2 border border-gray-300 rounded text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     </div>
                                     <input type="hidden" id="estimated-whatsapp-revenue" value="0"> <!-- Added for Patch B -->
-                                    <input type="hidden" id="recovered-cancelled-revenue" value="0"> <!-- Added for Patch B -->
                                 </div>
                             </div>
                         </div>
@@ -801,7 +800,7 @@
                               <p id="cancellation-loss-desc" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Revenus perdus</p>
                           </div>
                           <div class="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
-                              <p class="text-gray-600 dark:text-gray-300">Coût de Traitement <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Coût total pour préparer et expédier une commande.</span></span></label>
+                              <p class="text-gray-600 dark:text-gray-300">Coût de Traitement <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Coût total pour préparer et expédier une commande.</span></span></p>
                               <p id="fulfillment-cost" class="text-2xl font-bold">0 FCFA</p>
                               <p id="fulfillment-cost-orders" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Pour <span id="fulfilled-orders-display">0</span> commandes expédiées</p>
                           </div>
@@ -885,7 +884,7 @@
                                 <p id="automated-flow-revenue" class="text-xl font-bold text-green-600 dark:text-green-400">0 FCFA</p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
-                                <p class="text-gray-600 dark:text-gray-300">Revenue total <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Total attendu des revenus Email & WhatsApp sur la période sélectionnée.</span></span></label>
+                                <p class="text-gray-600 dark:text-gray-300">Revenue total <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Total attendu des revenus Email & WhatsApp sur la période sélectionnée.</span></span></p>
                                 <p id="email-whatsapp-total-revenue" class="text-xl font-bold text-green-600 dark:text-green-400">0 FCFA</p>
                             </div>
                         </div>
@@ -1519,28 +1518,6 @@
                     <p class="mt-2"><strong>La Prochaine Étape :</strong> La conversion est maîtrisée. Le prochain levier de croissance exponentielle est d'augmenter la valeur de chaque conversion c'est-à-dire pousser un client à acheter plus et à revenir plusieurs fois.</p>
                 </div></div>`;
             }
-            // ROAS Analysis
-            if (roas < 3) {
-                analysisHTML += `<div class="p-4 bg-red-50 rounded-lg dark:bg-red-900/20 mt-4"><h4 class="font-bold text-red-700 dark:text-red-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Diagnostic: Vous Payez pour Acquérir des Clients à Perte.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS est de ${safeNumber(roas).toFixed(2)}x. Pour chaque 1000 FCFA dépensés en pub, vous générez moins de 3000 FCFA de CA, ce qui est presque certainement une perte nette après le coût du produit.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> votre modèle d'acquisition actuel n'est pas viable. Plus vous dépensez, plus vous perdez.</p>
-                    <p class="mt-2"><strong>Causes Probables :</strong> Un CPA trop élevé, un prix de vente trop bas, ou l'absence totale de système pour augmenter le panier moyen (upsells).</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Vous êtes sur un tapis roulant vers l'épuisement de votre trésorerie. Ce n'est pas un problème de scaling, c'est un problème de survie.</p>
-                </div></div>`;
-            } else if (roas <= 5) {
-                analysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Point à Améliorer : Votre Rentabilité est Fragile.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS de ${safeNumber(roas).toFixed(2)}x vous permet de rester à flot, mais sans plus.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vous êtes rentable, mais vous n'avez pas de marge de sécurité. Une simple augmentation du coût des publicités par Meta peut rendre tout votre système non rentable du jour au lendemain.</p>
-                    <p class="mt-2"><strong>Causes Probables :</strong> Vous dépendez uniquement de la première vente. Vous n'avez pas de système en backend pour maximiser la Valeur Vie Client (LTV).</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Vous ne pouvez pas vous permettre de scaler agressivement. Votre croissance est plafonnée par la peur de voir votre rentabilité disparaître.</p>
-                </div></div>`;
-            } else {
-                analysisHTML += `<div class="p-4 bg-green-50 rounded-lg dark:bg-green-900/20 mt-4"><h4 class="font-bold text-green-700 dark:text-green-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Force: Votre Machine d'Acquisition est Rentable.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Un ROAS de ${safeNumber(roas).toFixed(2)}x est solide. Chaque franc investi en publicité génère un retour significatif.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vous avez un modèle d'acquisition qui fonctionne et qui finance sa propre croissance.</p>
-                    <p class="mt-2"><strong>La Prochaine Étape :</strong> Ce chiffre est le plancher de votre rentabilité. Avec des systèmes de maximisation (Funnel Max) et de rétention (Email/WhatsApp), ce ROAS de front-end pourrait devenir la porte d'entrée vers une profitabilité beaucoup plus grande.</p>
-                </div></div>`;
-            }
             document.getElementById('meta-analysis').innerHTML = analysisHTML;
 
             // TICKET 10: Benchmark comparison (Changed label)
@@ -2023,7 +2000,7 @@
                 const effectiveTotal = existingEmail_F + estimatedNewEmail_F + existingWhats_F + estimatedNewWhatsApp_F;
                 newListEl.textContent = effectiveTotal.toLocaleString('fr-FR');
                 // tooltip update (shopify-only)
-                document.querySelectorAll('#new-list-size + .info-tooltip .tooltip-text').forEach(t => t.textContent = "Taille effective = taille actuelle + inscriptions estimées via popups (Email + WhatsApp).");
+                document.querySelectorAll('#new-list-size + .info-tooltip .tooltip-text').forEach(t => t.textContent = "Taille effective = nombre d'abonnés actuel (Email + WhatsApp) + nouvelles inscriptions estimées via pop-ups.");
               } else {
                 newListEl.textContent = potentialNewTotal_F.toLocaleString('fr-FR');
                 // TICKET 5: Updated tooltip text for "Taille de la nouvelle liste"
@@ -2095,36 +2072,6 @@
                     });
                 }
             } catch (err) { console.warn('Hide meta-only email/whatsapp UI failed', err); }
-
-            // TICKET H: Replace tooltip formulas with short, plain-language definitions
-            const tooltipReplacements = {
-                // Selector or direct text check => new tooltip text
-                '[id="fulfillment-cost"] ~ .info-tooltip .tooltip-text': "Coût total pour préparer et expédier une commande.",
-                // Add others as needed. Generic fallback below will catch most.
-            };
-            Object.entries(tooltipReplacements).forEach(([sel, text])=>{
-                try {
-                    const node = document.querySelector(sel);
-                    if (node) node.textContent = text;
-                } catch(e){}
-            });
-            // Generic fallback for tooltips containing mathematical operators
-            document.querySelectorAll('.info-tooltip .tooltip-text').forEach(t=>{
-                const s = t.textContent || '';
-                if (/[=+\-*\/×]/.test(s)) { // Check for common mathematical operators
-                    t.textContent = 'Description simple du concept.';
-                }
-                // Specific manual overrides if needed for tooltips not caught by generic regex
-                if (t.textContent.includes('Revenue de Campagne manuel =')) t.textContent = "Estimation des ventes générées par vos campagnes manuelles (emails ciblés).";
-                if (t.textContent.includes('Revenue de flux automatisé =')) t.textContent = "Estimation des ventes générées automatiquement par vos flows (abandon panier, welcome).";
-                if (t.textContent.includes('Revenue total =')) t.textContent = "Total attendu des revenus Email & WhatsApp sur la période sélectionnée.";
-                if (t.textContent.includes('Nouvelles inscriptions =')) t.textContent = "Nouvelles inscriptions attendues à partir de vos pop-ups Email & WhatsApp (estimation simple).";
-                if (t.textContent.includes('Le coût total pour traiter et livrer les commandes')) t.textContent = "Coût total pour préparer et expédier une commande (produit + packaging + expédition).";
-                if (t.textContent.includes('Perte liée aux Annulations + (Nombre de Commandes Annulées × (Frais de livraison + CPA))')) t.textContent = "Le manque à gagner dû aux commandes annulées et aux coûts associés.";
-                if (t.textContent.includes('Le prix que vous payez pour acheter ou fabriquer un seul produit (coût des marchandises vendues - COGS).')) t.textContent = "Le prix que vous payez pour acheter ou fabriquer un seul produit.";
-                if (t.textContent.includes('Les frais totaux payés pour expédier vos produits (de votre fournisseur à vous, ou de vous à l\'entrepôt).')) t.textContent = "Les frais totaux pour expédier vos produits de votre fournisseur vers vous.";
-                if (t.textContent.includes('Le coût moyen de la livraison finale du colis au client (frais payés au livreur).')) t.textContent = "Le coût moyen de la livraison finale du colis au client.";
-            });
         });
 
         // TICKET C: Ensure order analysis is above performance analysis (non-destructive)
@@ -2325,19 +2272,6 @@
           initDarkMode(); // Keep existing dark mode init
           document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode); // Keep existing dark mode toggle
 
-          // TICKET 1: Call FX fetch on load
-          fetchFxUsdToXof().then(rate => {
-            console.info('FX USD→XOF:', rate);
-            // TICKET 3: trigger any dependent recalcs if already executed
-            const shopifyTabContent = document.getElementById('shopify-tab-content');
-            if (shopifyTabContent && !shopifyTabContent.classList.contains('hidden') && typeof calculateShopifyResults === 'function') {
-                calculateShopifyResults();
-            }
-            // TICKET 2: and update the small badge (if present)
-            const el = document.getElementById('fx-rate-badge');
-            if (el) el.textContent = `1 USD ≈ ${new Intl.NumberFormat('fr-FR').format(Math.round(rate))} FCFA`;
-          });
-
           // TICKET 3: Vider un input au focus (appliquer à tous) - original logic
           const inputs = Array.from(document.querySelectorAll('#meta-tab-content input, #shopify-tab-content input'));
           inputs.forEach(el => {
@@ -2367,32 +2301,6 @@
                   });
               }
           } catch (err) { console.warn('Hide meta-only email/whatsapp UI failed', err); }
-
-          // TICKET H: Replace tooltip formulas with short, plain-language definitions - original logic
-          const tooltipReplacements = {
-              '[id="fulfillment-cost"] ~ .info-tooltip .tooltip-text': "Coût total pour préparer et expédier une commande.",
-          };
-          Object.entries(tooltipReplacements).forEach(([sel, text])=>{
-              try {
-                  const node = document.querySelector(sel);
-                  if (node) node.textContent = text;
-              } catch(e){}
-          });
-          document.querySelectorAll('.info-tooltip .tooltip-text').forEach(t=>{
-              const s = t.textContent || '';
-              if (/[=+\-*\/×]/.test(s)) {
-                  t.textContent = 'Description simple du concept.';
-              }
-              if (t.textContent.includes('Revenue de Campagne manuel =')) t.textContent = "Estimation des ventes générées par vos campagnes manuelles (emails ciblés).";
-              if (t.textContent.includes('Revenue de flux automatisé =')) t.textContent = "Estimation des ventes générées automatiquement par vos flows (abandon panier, welcome).";
-              if (t.textContent.includes('Revenue total =')) t.textContent = "Total attendu des revenus Email & WhatsApp sur la période sélectionnée.";
-              if (t.textContent.includes('Nouvelles inscriptions =')) t.textContent = "Nouvelles inscriptions attendues à partir de vos pop-ups Email & WhatsApp (estimation simple).";
-              if (t.textContent.includes('Le coût total pour traiter et livrer les commandes')) t.textContent = "Coût total pour préparer et expédier une commande (produit + packaging + expédition).";
-              if (t.textContent.includes('Perte liée aux Annulations + (Nombre de Commandes Annulées × (Frais de livraison + CPA))')) t.textContent = "Le manque à gagner dû aux commandes annulées et aux coûts associés.";
-              if (t.textContent.includes('Le prix que vous payez pour acheter ou fabriquer un seul produit (coût des marchandises vendues - COGS).')) t.textContent = "Le prix que vous payez pour acheter ou fabriquer un seul produit.";
-              if (t.textContent.includes('Les frais totaux payés pour expédier vos produits (de votre fournisseur à vous, ou de vous à l\'entrepôt).')) t.textContent = "Les frais totaux pour expédier vos produits de votre fournisseur vers vous.";
-              if (t.textContent.includes('Le coût moyen de la livraison finale du colis au client (frais payés au livreur).')) t.textContent = "Le coût moyen de la livraison finale du colis au client.";
-          });
 
           // TICKET 6: Setup share buttons
           setupShareButtons();
@@ -2553,5 +2461,157 @@
   document.addEventListener('DOMContentLoaded', () => setTimeout(initObserverOnCTA, 600));
 })();
     </script>
+    <script>
+/* ------------------------------------------------------------------
+   PATCH: Remplacement contextuel des infobulles "Description simple du concept"
+   & Mise à jour temps réel du badge FX (1 USD -> XOF/FCFA)
+   Non-destructif — override display only.
+   ------------------------------------------------------------------ */
+
+(function() {
+  // --- UTILS --------------------------------------------------------
+  function safeText(s){ return (s||'').toString().trim(); }
+  function closestLabelText(el){
+    if(!el) return '';
+    // cherche <label> parent ou le <p> précédent ou conteneur
+    const label = el.closest('label') || el.closest('.bg-gray-50') || el.closest('.grid') || el.closest('div');
+    if(!label) return '';
+    // tente plusieurs sélecteurs pour obtenir un texte indicatif
+    const candidates = [
+      label.querySelector('label')?.innerText,
+      label.querySelector('p')?.innerText,
+      label.innerText
+    ];
+    for(const c of candidates) if(c && c.trim()) return c.trim();
+    return '';
+  }
+  function setTooltipText(node, text){
+    if(!node) return;
+    node.textContent = text;
+  }
+  function formatFCFA(n){
+    try { return Number(n).toLocaleString('fr-FR') + ' FCFA'; } catch(e) { return n + ' FCFA'; }
+  }
+
+  // --- Mapping de motifs => textes d'infobulle pertinents ------------
+  // Le LLM doit coller/ajuster les phrases ci-dessous si besoin.
+  const replacementRules = [
+    {
+      // Taille de la nouvelle liste (potentiel vs effectif)
+      match: /Taille de la nouvelle liste|Nouvelles inscriptions|Taille actuelle de la liste/i,
+      text: "Potentiel estimé = taille actuelle + nouvelles inscriptions attendues via pop-ups Email & WhatsApp pendant la période sélectionnée."
+    },
+    {
+      match: /Revenue de Campagne manuel|Campagnes manuelles|Revenue de Campagne/i,
+      text: "Estimation des ventes générées par vos campagnes manuelles (emails et WhatsApp ciblés) sur la période choisie."
+    },
+    {
+      match: /Revenue de flux automatisé|Flux automatisé|flows/i,
+      text: "Estimation des ventes générées automatiquement par vos flows (abandon de panier, welcome sequence, relances)."
+    },
+    {
+      match: /Revenue total|Total attendu des revenus Email|email-whatsapp-total/i,
+      text: "Somme estimée des revenus Email & WhatsApp = campagnes manuelles + flows automatisés sur la période choisie."
+    },
+    {
+      match: /Frais de Port|Coût du produit|Coût total pour expédier/i,
+      text: "Les frais liés à l'acheminement et la livraison — inclut frais du fournisseur et frais de livraison finale au client."
+    },
+    {
+      match: /Coût de Traitement|fulfillment|traitement/i,
+      text: "Coût total pour préparer et expédier une commande (emballage, manutention, logistique)."
+    },
+    {
+      match: /Taux d'inscription Pop-up|popup-rate|pop-up/i,
+      text: "Pourcentage de visiteurs qui voient votre pop-up et s'inscrivent — benchmark : ~10%."
+    },
+    {
+      match: /CTR des campagnes manuelles|CTR des flux automatisés|taux de clic/i,
+      text: "Pourcentage des destinataires qui cliquent sur le lien dans votre campagne (email ou WhatsApp)."
+    },
+    {
+      match: /Nouvelles inscriptions =|Nouvelles inscriptions attendues|Nouvelles inscriptions/i,
+      text: "Estimation du nombre de nouvelles inscriptions provenant des pop-ups, calculée à partir des sessions × taux d'inscription pop-up."
+    }
+  ];
+
+  // --- Fonction qui remplace intelligemment les infobulles -----------
+  function replaceTooltipsContextual(){
+    document.querySelectorAll('.info-tooltip .tooltip-text').forEach(t => {
+      const current = safeText(t.textContent);
+      // si texte déjà correct et pas le fallback générique, skip
+      if(current && !/Description simple du concept/i.test(current) && current.length > 8) return;
+      // determine context
+      const ctx = closestLabelText(t.parentElement) || closestLabelText(t.closest('.bg-gray-50')) || '';
+      // find matching rule
+      let replaced = false;
+      for(const rule of replacementRules){
+        if(rule.match.test(ctx)){
+          setTooltipText(t, rule.text);
+          replaced = true;
+          break;
+        }
+      }
+      if(!replaced){
+        // fallback intelligent : if currently generic, replace with helpful generic explanation
+        if(/Description simple du concept/i.test(current) || current.length < 8){
+          setTooltipText(t, "Explication : ce champ est calculé à partir des entrées voisines (sessions, taux, prix) et sert à estimer le potentiel sur la période sélectionnée.");
+        }
+      }
+    });
+  }
+
+  // --- FX rate badge update (USD -> XOF/FCFA) -------------------------
+  // Utilise exchangerate.host (CORS OK). Fallback en cas d'erreur.
+  async function updateFxRateBadge(){
+    const badge = document.getElementById('fx-rate-badge');
+    if(!badge) return;
+    const fallbackRate = 600;
+    // display provisional while fetching
+    try { badge.textContent = '1 USD ≈ ...'; } catch(e){}
+    try {
+      const resp = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=XOF');
+      if(!resp.ok) throw new Error('response not ok');
+      const data = await resp.json();
+      const rate = data && data.rates && data.rates.XOF ? Number(data.rates.XOF) : fallbackRate;
+      const rounded = Math.round(rate);
+      badge.textContent = `1 USD ≈ ${rounded.toLocaleString('fr-FR')} FCFA`;
+      badge.setAttribute('title', `Taux en direct : 1 USD = ${rate} XOF — source: exchangerate.host`);
+    } catch(err){
+      console.warn('updateFxRateBadge failed, using fallback', err);
+      badge.textContent = `1 USD ≈ ${fallbackRate.toLocaleString('fr-FR')} FCFA`;
+      badge.setAttribute('title', 'Impossible de récupérer le taux en direct, affichage de valeur par défaut');
+    }
+  }
+
+  // --- Idempotent init : exécution après DOM ready -------------------
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      replaceTooltipsContextual();    // remplace les infobulles 'Description simple du concept'
+    } catch(e){ console.warn('replaceTooltipsContextual error', e); }
+
+    // init FX badge and refresh every 10 minutes (10*60*1000 ms)
+    updateFxRateBadge();
+    try { setInterval(updateFxRateBadge, 10 * 60 * 1000); } catch(e){}
+
+    // Observateur : si le DOM ajoute dynamiquement des infobulles après calcul,
+    // on les corrige automatiquement (mutations seulement pour .info-tooltip ajoutés).
+    const obs = new MutationObserver((mutations) => {
+      let found = false;
+      for(const m of mutations){
+        if(m.addedNodes && m.addedNodes.length){
+          m.addedNodes.forEach(n=>{
+            if(n.querySelector && n.querySelector('.info-tooltip')) found = true;
+            if(n.classList && n.classList.contains && n.classList.contains('info-tooltip')) found = true;
+          });
+        }
+      }
+      if(found) replaceTooltipsContextual();
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
+
+})();
+</script>
 </body>
 </html>
