@@ -1,15 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-    <!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '1274079');
-</script>
-<!-- End MailerLite Universal -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -269,6 +260,16 @@
           border-color: rgba(255,255,255,0.06);
         }
     </style>
+    <!-- MailerLite Universal (Moved to head as per TICKET 1) -->
+    <script>
+      (function(w,d,e,u,f,l,n){
+        w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},
+        l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);
+      })(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+      ml('account', '1274079');
+    </script>
+    <!-- End MailerLite Universal -->
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <div id="app" class="min-h-screen">
@@ -743,6 +744,7 @@
                                         <input type="number" id="whatsapp-campaigns-per-week" placeholder="ex : 1" class="w-full px-3 py-2 border border-gray-300 rounded text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                     </div>
                                     <input type="hidden" id="estimated-whatsapp-revenue" value="0"> <!-- Added for Patch B -->
+                                    <input type="hidden" id="recovered-cancelled-revenue" value="0"> <!-- Added for Patch B -->
                                 </div>
                             </div>
                         </div>
@@ -1099,8 +1101,8 @@
             </div>
             <!-- TICKET A: DONNEZ-NOUS VOS SUGGESTIONS - centré, ouvre MailerLite (popup ID mXMWdM) avec fallback preview -->
             <div class="mt-6 text-center">
-              <!-- TICKET G: MailerLite button link -->
-              <button class="px-5 py-3 bg-primary text-white rounded-md inline-flex items-center gap-2" aria-expanded="false" onclick="window.open('https://preview.mailerlite.io/forms/1274079/164160964725311195/share','_blank')">
+              <!-- TICKET 3: Updated to use event listener and showMailerLiteForm helper -->
+              <button id="suggest-button" class="px-5 py-3 bg-primary text-white rounded-md inline-flex items-center gap-2" aria-expanded="false">
                 Donnez-nous vos suggestions
                 <!-- small chevron for button -->
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8l4 4 4-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2331,13 +2333,64 @@
           });
         });
     </script>
-    <!-- MailerLite Universal (existing snippet) -->
     <script>
-      (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-      (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-      ml('account', '1274079');
+      // Safe MailerLite show helper — shopify-only page (TICKET 2)
+      (function(){
+        function showMailerLiteForm(formId, options) {
+          options = options || { autoFocus: true };
+          const maxAttempts = 40; // try for ~4s (40 * 100ms)
+          let attempts = 0;
+          const PREVIEW_URL = 'https://preview.mailerlite.io/forms/1274079/164160964725311195/share'; // Add PREVIEW_URL here for fallback
+
+          function _try() {
+            attempts++;
+            if (typeof window.ml === 'function') {
+              try {
+                window.ml('show', formId, options.autoFocus);
+              } catch(e) {
+                console.warn('ml show error', e);
+                // Fallback to opening the preview URL in case of ml show error
+                window.open(PREVIEW_URL, '_blank');
+              }
+              return;
+            }
+            if (attempts < maxAttempts) {
+              setTimeout(_try, 100);
+            } else {
+              console.warn('MailerLite (ml) did not load in time. Ensure the universal.js snippet is in <head>.');
+              // Fallback: open a link to your MailerLite hosted form
+              window.open(PREVIEW_URL, '_blank');
+            }
+          }
+          _try();
+        }
+
+        // Expose helper for other scripts (only if not already defined)
+        if (!window.showMailerLiteForm) window.showMailerLiteForm = showMailerLiteForm;
+      })();
+
+      // TICKET 3: Attach event listener to "Donnez-nous vos suggestions" button
+      document.addEventListener('DOMContentLoaded', function() {
+        const suggestButton = document.getElementById('suggest-button');
+        if (suggestButton) {
+          suggestButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Use the MailerLite form ID 'mXMWdM'
+            if (typeof window.showMailerLiteForm === 'function') {
+              window.showMailerLiteForm('mXMWdM');
+            } else {
+              // Fallback if showMailerLiteForm isn't defined for some reason
+              console.warn('showMailerLiteForm is not available. Attempting direct ml call or fallback URL.');
+              if (typeof window.ml === 'function') {
+                window.ml('show', 'mXMWdM', true);
+              } else {
+                window.open('https://preview.mailerlite.io/forms/1274079/164160964725311195/share', '_blank');
+              }
+            }
+          });
+        }
+      });
     </script>
-    <!-- End MailerLite Universal -->
     <script>
 // ---------- Popup MailerLite : robust trigger (non-destructif) ----------
 (function(){
@@ -2624,4 +2677,3 @@
 </script>
 </body>
 </html>
-
