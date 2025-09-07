@@ -1,6 +1,15 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+    <!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1274079');
+</script>
+<!-- End MailerLite Universal -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -260,16 +269,6 @@
           border-color: rgba(255,255,255,0.06);
         }
     </style>
-    <!-- MailerLite Universal (required for ml('show', ...)) -->
-    <script>
-      (function(w,d,e,u,f,l,n){
-        w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},
-        l=d.createElement(e); l.async=1; l.src=u;
-        n=d.getElementsByTagName(e)[0]; n.parentNode.insertBefore(l,n);
-      })(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-      ml('account', '1274079'); /* <- keep this account ID (1274079) unless MailerLite gave you a different one */
-    </script>
-    <!-- End MailerLite Universal -->
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <div id="app" class="min-h-screen">
@@ -1100,17 +1099,12 @@
             </div>
             <!-- TICKET A: DONNEZ-NOUS VOS SUGGESTIONS - centré, ouvre MailerLite (popup ID mXMWdM) avec fallback preview -->
             <div class="mt-6 text-center">
-              <!-- MailerLite trigger (opens popup by ID) - TICKET 2 & 3 -->
-              <button class="px-5 py-3 bg-primary text-white rounded-md inline-flex items-center gap-2" aria-expanded="false" aria-label="Ouvrir le formulaire" onclick="openMailerLitePopup('mXMWdM')">
+              <!-- TICKET G: MailerLite button link -->
+              <button class="px-5 py-3 bg-primary text-white rounded-md inline-flex items-center gap-2" aria-expanded="false" onclick="window.open('https://preview.mailerlite.io/forms/1274079/164160964725311195/share','_blank')">
                 Donnez-nous vos suggestions
                 <!-- small chevron for button -->
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8l4 4 4-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
-              <!-- Optional fallback (opens the preview URL in new tab if ml() not available) -->
-              <noscript>
-                <a href="https://preview.mailerlite.io/forms/1274079/164160964725311195/share"
-                   target="_blank" rel="noopener" class="px-5 py-3 bg-primary text-white rounded-md inline-block mt-2">Ouvrir le formulaire (fallback)</a>
-              </noscript>
             </div>
         </div>
     </div>
@@ -1533,28 +1527,6 @@
                     <p class="mt-2"><strong>La Prochaine Étape :</strong> La conversion est maîtrisée. Le prochain levier de croissance exponentielle est d'augmenter la valeur de chaque conversion c'est-à-dire pousser un client à acheter plus et à revenir plusieurs fois.</p>
                 </div></div>`;
             }
-            // ROAS Analysis
-            if (roas < 3) {
-                analysisHTML += `<div class="p-4 bg-red-50 rounded-lg dark:bg-red-900/20 mt-4"><h4 class="font-bold text-red-700 dark:text-red-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Diagnostic: Vous Payez pour Acquérir des Clients à Perte.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS est de ${safeNumber(roas).toFixed(2)}x. Pour chaque 1000 FCFA dépensés en pub, vous générez moins de 3000 FCFA de CA, ce qui est presque certainement une perte nette après le coût du produit.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> votre modèle d'acquisition actuel n'est pas viable. Plus vous dépensez, plus vous perdez.</p>
-                    <p class="mt-2"><strong>Causes Probables :</strong> Un CPA trop élevé, un prix de vente trop bas, ou l'absence totale de système pour augmenter le panier moyen (upsells).</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Vous êtes sur un tapis roulant vers l'épuisement de votre trésorerie. Ce n'est pas un problème de scaling, c'est un problème de survie.</p>
-                </div></div>`;
-            } else if (roas <= 5) {
-                analysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Point à Améliorer : Votre Rentabilité est Fragile.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS de ${safeNumber(roas).toFixed(2)}x vous permet de rester à flot, mais sans plus.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vous êtes rentable, mais vous n'avez pas de marge de sécurité. Une simple augmentation du coût des publicités par Meta peut rendre tout votre système non rentable du jour au lendemain.</p>
-                    <p class="mt-2"><strong>Causes Probables :</strong> Vous dépendez uniquement de la première vente. Vous n'avez pas de système en backend pour maximiser la Valeur Vie Client (LTV).</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Vous ne pouvez pas vous permettre de scaler agressivement. Votre croissance est plafonnée par la peur de voir votre rentabilité disparaître.</p>
-                </div></div>`;
-            } else {
-                analysisHTML += `<div class="p-4 bg-green-50 rounded-lg dark:bg-green-900/20 mt-4"><h4 class="font-bold text-green-700 dark:text-green-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Force: Votre Machine d'Acquisition est Rentable.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Un ROAS de ${safeNumber(roas).toFixed(2)}x est solide. Chaque franc investi en publicité génère un retour significatif.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vous avez un modèle d'acquisition qui fonctionne et qui finance sa propre croissance.</p>
-                    <p class="mt-2"><strong>La Prochaine Étape :</strong> Ce chiffre est le plancher de votre rentabilité. Avec des systèmes de maximisation (Funnel Max) et de rétention (Email/WhatsApp), ce ROAS de front-end pourrait devenir la porte d'entrée vers une profitabilité beaucoup plus grande.</p>
-                </div></div>`;
-            }
             document.getElementById('meta-analysis').innerHTML = analysisHTML;
 
             // TICKET 10: Benchmark comparison (Changed label)
@@ -1956,7 +1928,7 @@
             } else if (conversionRate <= 5) {
                 shopifyAnalysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Point à Améliorer : Vous Laissez la Moitié de Vos Ventes Potentielles s'Échapper.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
                     <p><strong>Le Diagnostic Brut :</strong> Votre taux de conversion de ${formatPercent(conversionRate)} est correct, mais loin d'être optimisé.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> votre système fonctionne, mais il a des fuites majeures. Pour chaque client que you obtenez, vous en perdez un autre qui était pourtant intéressé.</p>
+                    <p class="mt-2"><strong>Cela signifie que</strong> votre système fonctionne, mais il a des fuites majeures. Pour chaque client que vous obtenez, vous en perdez un autre qui était pourtant intéressé.</p>
                     <p class="mt-2"><strong>Causes Probables :</strong> Manque d'urgence, garanties faibles, ou pas assez de raisons de croire en votre produit par rapport à la concurrence.</p>
                     <p class="mt-2"><strong>L'Impact Financier :</strong> Doubler ce chiffre est possible avec les bons systèmes d'optimisation de la conversion (CRO), ce qui diviserait par deux votre coût par acquisition sans dépenser un dollar de plus en pub.</p>
                 </div></div>`;
@@ -2103,6 +2075,7 @@
                       const el = metaContainer.querySelector(sel);
                       if (el) {
                           el.style.display = 'none';
+                          // Disable inputs/selects within these hidden elements
                           if (el.querySelectorAll) el.querySelectorAll('input, select, textarea, button').forEach(i => i.disabled = true);
                       }
                     });
@@ -2358,34 +2331,296 @@
           });
         });
     </script>
+    <!-- MailerLite Universal (existing snippet) -->
     <script>
-      // safe wrapper to open MailerLite popup even if universal script still loading - TICKET 3
-      function openMailerLitePopup(popupId) {
-        if (window.ml && typeof window.ml === 'function') {
-          try { ml('show', popupId, true); } catch(e) { console.warn('ml.show failed', e); }
-          return;
-        }
-        // wait for ml to load (max 5 seconds)
-        var waited = 0;
-        var interval = setInterval(function() {
-          waited += 100;
-          if (window.ml && typeof window.ml === 'function') {
-            clearInterval(interval);
-            try { ml('show', popupId, true); } catch(e) { console.warn('ml.show failed after wait', e); }
-          } else if (waited >= 5000) {
-            clearInterval(interval);
-            console.warn('MailerLite script did not load within 5s. Opening preview link as fallback.');
-            window.open('https://preview.mailerlite.io/forms/1274079/164160964725311195/share', '_blank', 'noopener');
-          }
-        }, 100);
-      }
+      (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+      (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+      ml('account', '1274079');
     </script>
-    <!-- TICKET 6: Optional debugging buttons -->
-    <div id="ml-debug" style="margin:12px auto;padding:8px;border:1px dashed #ddd; max-width: 400px; text-align: center; background-color: #f9f9f9; border-radius: 8px;">
-      <p style="font-weight: bold; margin-bottom: 8px;">MailerLite Debugging Tools</p>
-      <button onclick="console.log('ml:', typeof ml, ml); alert('Check console for ml() type');" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 8px;">Check ml()</button>
-      <button onclick="openMailerLitePopup('mXMWdM')" style="background-color: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Open popup (test)</button>
-      <div id="ml-debug-net" style="margin-top: 8px; font-size: 0.8em; color: #666;"></div>
-    </div>
+    <!-- End MailerLite Universal -->
+    <script>
+// ---------- Popup MailerLite : robust trigger (non-destructif) ----------
+(function(){
+  const POPUP_ID = 'mXMWdM'; // mailerlite popup id
+  const PREVIEW_URL = 'https://preview.mailerlite.io/forms/1274079/164160964725311195/share';
+  const STORAGE_KEY = 'ml_popup_shown_shopify_v2';
+  const STORAGE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // TTL persistent : 30 days
+  let observer = null;
+
+  // Helper: has been shown recently?
+  function hasShownRecently() {
+    try {
+      // session-level quick block
+      if (sessionStorage.getItem(STORAGE_KEY + '_session')) return true;
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const obj = JSON.parse(raw);
+      if (!obj || !obj.ts) return false;
+      const age = Date.now() - Number(obj.ts || 0);
+      return age < STORAGE_TTL_MS;
+    } catch (e) { return false; }
+  }
+
+  function markAsShown() {
+    try {
+      sessionStorage.setItem(STORAGE_KEY + '_session', '1');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ts: Date.now() }));
+    } catch(e){ /* ignore */ }
+  }
+
+  // robust CTA finder: tries common selectors & heuristics
+  function findShopifyCTA() {
+    const shopifyArea = document.getElementById('shopify-results') || document.getElementById('shopify-tab-content');
+    if (!shopifyArea) return null;
+    // try known calendar / subscribe links first
+    let link = shopifyArea.querySelector("a[href*='calendly.com'], a[href*='subscribepage.io'], a[href*='preview.mailerlite.io']");
+    if (link) return link;
+    // look for exact text matches (normalized)
+    const btns = Array.from(shopifyArea.querySelectorAll('a, button'));
+    const keywords = ['débloquer', 'revenu', 'découvrir', 'réserver', 'audit', 'calendly'];
+    for (const b of btns) {
+      const txt = (b.textContent || '').trim().toLowerCase();
+      if (!txt) continue;
+      for (const kw of keywords) {
+        if (txt.includes(kw)) return b;
+      }
+    }
+    // fallback: first big CTA-looking element
+    return shopifyArea.querySelector('a[class*="btn"], button[class*="btn"], a, button') || null;
+  }
+
+  // show popup with fallback
+  function showPopup() {
+    try {
+      if (typeof ml !== 'undefined' && POPUP_ID) {
+        ml('show', POPUP_ID, true);
+      } else {
+        window.open(PREVIEW_URL, '_blank');
+      }
+      markAsShown();
+    } catch (e) {
+      try { window.open(PREVIEW_URL, '_blank'); markAsShown(); } catch(e2){ console.warn('Popup fallback failed', e2); }
+    }
+  }
+
+  // attach observer to CTA
+  function initObserverOnCTA() {
+    try {
+      if (hasShownRecently()) return false;
+      // require diagnostic done
+      if (!window.__shopifyDiagnosticDone) return false;
+
+      const cta = findShopifyCTA();
+      if (!cta) return false;
+
+      // Avoid duplicate attachment
+      if (cta.__mlObserverAttached) return true;
+
+      // If CTA is in the viewport already, show immediately (but still mark)
+      const rect = cta.getBoundingClientRect();
+      const inViewport = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+      if (inViewport) {
+        showPopup();
+        cta.__mlObserverAttached = true;
+        return true;
+      }
+
+      observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.6 && window.__shopifyDiagnosticDone && !hasShownRecently()) {
+            showPopup();
+            if (observer) observer.disconnect();
+            entry.target.__mlObserverAttached = true;
+          }
+        }
+      }, { threshold: [0.6], root: null, rootMargin: '0px' });
+
+      observer.observe(cta);
+      cta.__mlObserverAttached = true;
+
+      // also mark as shown if user clicks CTA (so popup won't reappear)
+      const onClick = () => { markAsShown(); cta.removeEventListener('click', onClick); };
+      cta.addEventListener('click', onClick);
+
+      return true;
+    } catch (e) {
+      console.warn('initObserverOnCTA error', e);
+      return false;
+    }
+  }
+
+  // retry attach (Shopify results might be rendered async)
+  let tries = 0;
+  const timer = setInterval(() => {
+    tries++;
+    const ok = initObserverOnCTA();
+    if (ok || tries > 60) clearInterval(timer);
+  }, 300);
+
+  // Ensure we try again when switching tab to shopify
+  const originalSwitch = window.switchTab;
+  window.switchTab = function(tabName) {
+    try { if (typeof originalSwitch === 'function') originalSwitch(tabName); } catch(e){}
+    if (tabName === 'shopify') setTimeout(initObserverOnCTA, 300);
+  };
+
+  // If calculateShopifyResults sets window.__shopifyDiagnosticDone=true, then initObserver will trigger (we also call init here)
+  document.addEventListener('shopify-diagnostic-done', () => setTimeout(initObserverOnCTA, 150));
+  // and also try on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => setTimeout(initObserverOnCTA, 600));
+})();
+    </script>
+    <script>
+/* ------------------------------------------------------------------
+   PATCH: Remplacement contextuel des infobulles "Description simple du concept"
+   & Mise à jour temps réel du badge FX (1 USD -> XOF/FCFA)
+   Non-destructif — override display only.
+   ------------------------------------------------------------------ */
+
+(function() {
+  // --- UTILS --------------------------------------------------------
+  function safeText(s){ return (s||'').toString().trim(); }
+  function closestLabelText(el){
+    if(!el) return '';
+    // cherche <label> parent ou le <p> précédent ou conteneur
+    const label = el.closest('label') || el.closest('.bg-gray-50') || el.closest('.grid') || el.closest('div');
+    if(!label) return '';
+    // tente plusieurs sélecteurs pour obtenir un texte indicatif
+    const candidates = [
+      label.querySelector('label')?.innerText,
+      label.querySelector('p')?.innerText,
+      label.innerText
+    ];
+    for(const c of candidates) if(c && c.trim()) return c.trim();
+    return '';
+  }
+  function setTooltipText(node, text){
+    if(!node) return;
+    node.textContent = text;
+  }
+  function formatFCFA(n){
+    try { return Number(n).toLocaleString('fr-FR') + ' FCFA'; } catch(e) { return n + ' FCFA'; }
+  }
+
+  // --- Mapping de motifs => textes d'infobulle pertinents ------------
+  // Le LLM doit coller/ajuster les phrases ci-dessous si besoin.
+  const replacementRules = [
+    {
+      // Taille de la nouvelle liste (potentiel vs effectif)
+      match: /Taille de la nouvelle liste|Nouvelles inscriptions|Taille actuelle de la liste/i,
+      text: "Potentiel estimé = taille actuelle + nouvelles inscriptions attendues via pop-ups Email & WhatsApp pendant la période sélectionnée."
+    },
+    {
+      match: /Revenue de Campagne manuel|Campagnes manuelles|Revenue de Campagne/i,
+      text: "Estimation des ventes générées par vos campagnes manuelles (emails et WhatsApp ciblés) sur la période choisie."
+    },
+    {
+      match: /Revenue de flux automatisé|Flux automatisé|flows/i,
+      text: "Estimation des ventes générées automatiquement par vos flows (abandon de panier, welcome sequence, relances)."
+    },
+    {
+      match: /Revenue total|Total attendu des revenus Email|email-whatsapp-total/i,
+      text: "Somme estimée des revenus Email & WhatsApp = campagnes manuelles + flows automatisés sur la période choisie."
+    },
+    {
+      match: /Frais de Port|Coût du produit|Coût total pour expédier/i,
+      text: "Les frais liés à l'acheminement et la livraison — inclut frais du fournisseur et frais de livraison finale au client."
+    },
+    {
+      match: /Coût de Traitement|fulfillment|traitement/i,
+      text: "Coût total pour préparer et expédier une commande (emballage, manutention, logistique)."
+    },
+    {
+      match: /Taux d'inscription Pop-up|popup-rate|pop-up/i,
+      text: "Pourcentage de visiteurs qui voient votre pop-up et s'inscrivent — benchmark : ~10%."
+    },
+    {
+      match: /CTR des campagnes manuelles|CTR des flux automatisés|taux de clic/i,
+      text: "Pourcentage des destinataires qui cliquent sur le lien dans votre campagne (email ou WhatsApp)."
+    },
+    {
+      match: /Nouvelles inscriptions =|Nouvelles inscriptions attendues|Nouvelles inscriptions/i,
+      text: "Estimation du nombre de nouvelles inscriptions provenant des pop-ups, calculée à partir des sessions × taux d'inscription pop-up."
+    }
+  ];
+
+  // --- Fonction qui remplace intelligemment les infobulles -----------
+  function replaceTooltipsContextual(){
+    document.querySelectorAll('.info-tooltip .tooltip-text').forEach(t => {
+      const current = safeText(t.textContent);
+      // si texte déjà correct et pas le fallback générique, skip
+      if(current && !/Description simple du concept/i.test(current) && current.length > 8) return;
+      // determine context
+      const ctx = closestLabelText(t.parentElement) || closestLabelText(t.closest('.bg-gray-50')) || '';
+      // find matching rule
+      let replaced = false;
+      for(const rule of replacementRules){
+        if(rule.match.test(ctx)){
+          setTooltipText(t, rule.text);
+          replaced = true;
+          break;
+        }
+      }
+      if(!replaced){
+        // fallback intelligent : if currently generic, replace with helpful generic explanation
+        if(/Description simple du concept/i.test(current) || current.length < 8){
+          setTooltipText(t, "Explication : ce champ est calculé à partir des entrées voisines (sessions, taux, prix) et sert à estimer le potentiel sur la période sélectionnée.");
+        }
+      }
+    });
+  }
+
+  // --- FX rate badge update (USD -> XOF/FCFA) -------------------------
+  // Utilise exchangerate.host (CORS OK). Fallback en cas d'erreur.
+  async function updateFxRateBadge(){
+    const badge = document.getElementById('fx-rate-badge');
+    if(!badge) return;
+    const fallbackRate = 600;
+    // display provisional while fetching
+    try { badge.textContent = '1 USD ≈ ...'; } catch(e){}
+    try {
+      const resp = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=XOF');
+      if(!resp.ok) throw new Error('response not ok');
+      const data = await resp.json();
+      const rate = data && data.rates && data.rates.XOF ? Number(data.rates.XOF) : fallbackRate;
+      const rounded = Math.round(rate);
+      badge.textContent = `1 USD ≈ ${rounded.toLocaleString('fr-FR')} FCFA`;
+      badge.setAttribute('title', `Taux en direct : 1 USD = ${rate} XOF — source: exchangerate.host`);
+    } catch(err){
+      console.warn('updateFxRateBadge failed, using fallback', err);
+      badge.textContent = `1 USD ≈ ${fallbackRate.toLocaleString('fr-FR')} FCFA`;
+      badge.setAttribute('title', 'Impossible de récupérer le taux en direct, affichage de valeur par défaut');
+    }
+  }
+
+  // --- Idempotent init : exécution après DOM ready -------------------
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      replaceTooltipsContextual();    // remplace les infobulles 'Description simple du concept'
+    } catch(e){ console.warn('replaceTooltipsContextual error', e); }
+
+    // init FX badge and refresh every 10 minutes (10*60*1000 ms)
+    updateFxRateBadge();
+    try { setInterval(updateFxRateBadge, 10 * 60 * 1000); } catch(e){}
+
+    // Observateur : si le DOM ajoute dynamiquement des infobulles après calcul,
+    // on les corrige automatiquement (mutations seulement pour .info-tooltip ajoutés).
+    const obs = new MutationObserver((mutations) => {
+      let found = false;
+      for(const m of mutations){
+        if(m.addedNodes && m.addedNodes.length){
+          m.addedNodes.forEach(n=>{
+            if(n.querySelector && n.querySelector('.info-tooltip')) found = true;
+            if(n.classList && n.classList.contains && n.classList.contains('info-tooltip')) found = true;
+          });
+        }
+      }
+      if(found) replaceTooltipsContextual();
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
+
+})();
+</script>
 </body>
 </html>
