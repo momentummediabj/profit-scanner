@@ -764,7 +764,7 @@
 
                     <!-- Chiffre d'affaire Summary -->
                     <div class="mb-8 p-4 bg-gradient-to-r from-primary to-secondary rounded-lg text-white">
-                        <p class="text-lg mb-2">Chiffre d'affaires Mensuel :</p>
+                        <p id="shopify-revenue-label" class="text-lg mb-2">Chiffre d'affaires Mensuel :</p>
                         <p id="shopify-monthly-revenue" class="text-3xl font-bold">0 FCFA</p>
                         <p class="text-sm mt-2">(Commandes Expédiées * Prix du Produit)</p>
                     </div>
@@ -809,7 +809,7 @@
                               <p id="cancellation-loss-desc" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Revenus perdus</p>
                           </div>
                           <div class="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
-                              <p class="text-gray-600 dark:text-gray-300">Coût de Traitement <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Coût total pour préparer et expédier une commande.</span></span></p>
+                              <p class="text-gray-600 dark:text-gray-300">Coût de Traitement <span class="info-tooltip" tabindex="0">i<span class="tooltip-text">Coût total pour préparer et expédier les commandes confirmés</span></span></label></p>
                               <p id="fulfillment-cost" class="text-2xl font-bold">0 FCFA</p>
                               <p id="fulfillment-cost-orders" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Pour <span id="fulfilled-orders-display">0</span> commandes expédiées</p>
                           </div>
@@ -1321,7 +1321,12 @@
         };
 
         // ---------- TICKET 1: FX (USD -> XOF) fetch + cache ----------
-        const DEFAULT_FX = 600; // fallback
+        // OLD (replace)
+        // const DEFAULT_FX = 600; // fallback
+
+        // NEW (replace with)
+        const DEFAULT_FX = 570; // fallback (per spec)
+
         const FX_CACHE_KEY = 'fx_usd_xof';
         const FX_CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours
 
@@ -1334,6 +1339,17 @@
               const obj = JSON.parse(cached);
               if (Date.now() - obj.ts < FX_CACHE_TTL && obj.rate) {
                 window.FX_FCFA_PER_USD = Number(obj.rate);
+                // after window.FX_FCFA_PER_USD = rate;  (and after fallback assignment)
+                try {
+                  const rateRounded = Math.round(window.FX_FCFA_PER_USD);
+                  const fxBadge = document.getElementById('fx-rate-badge');
+                  if (fxBadge) fxBadge.textContent = `1 USD ≈ ${rateRounded} FCFA`;
+                  // if page has results, refresh recalculations that depend on FX
+                  if (typeof calculateMetaResults === 'function') try { calculateMetaResults(); } catch(e){/*ok*/ }
+                  if (typeof calculateShopifyResults === 'function') try { calculateShopifyResults(); } catch(e){/*ok*/ }
+                  if (typeof refreshCAC === 'function') try { refreshCAC(); } catch(e){/*ok*/ }
+                  if (typeof refreshShopifyPotentialBreakdown_Shopify === 'function') try { refreshShopifyPotentialBreakdown_Shopify(); } catch(e){/*ok*/ }
+                } catch(e) { console.warn('post-FX update failed', e); }
                 return window.FX_FCFA_PER_USD;
               }
             }
@@ -1346,6 +1362,17 @@
 
             localStorage.setItem(FX_CACHE_KEY, JSON.stringify({rate, ts: Date.now()}));
             window.FX_FCFA_PER_USD = rate;
+            // after window.FX_FCFA_PER_USD = rate;  (and after fallback assignment)
+            try {
+              const rateRounded = Math.round(window.FX_FCFA_PER_USD);
+              const fxBadge = document.getElementById('fx-rate-badge');
+              if (fxBadge) fxBadge.textContent = `1 USD ≈ ${rateRounded} FCFA`;
+              // if page has results, refresh recalculations that depend on FX
+              if (typeof calculateMetaResults === 'function') try { calculateMetaResults(); } catch(e){/*ok*/ }
+              if (typeof calculateShopifyResults === 'function') try { calculateShopifyResults(); } catch(e){/*ok*/ }
+              if (typeof refreshCAC === 'function') try { refreshCAC(); } catch(e){/*ok*/ }
+              if (typeof refreshShopifyPotentialBreakdown_Shopify === 'function') try { refreshShopifyPotentialBreakdown_Shopify(); } catch(e){/*ok*/ }
+            } catch(e) { console.warn('post-FX update failed', e); }
             return rate;
           } catch (err) {
             console.warn('fetchFxUsdToXof failed, using fallback. err:', err);
@@ -1354,10 +1381,32 @@
               const cached = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || '{}');
               if (cached && cached.rate) {
                 window.FX_FCFA_PER_USD = Number(cached.rate);
+                // after window.FX_FCFA_PER_USD = rate;  (and after fallback assignment)
+                try {
+                  const rateRounded = Math.round(window.FX_FCFA_PER_USD);
+                  const fxBadge = document.getElementById('fx-rate-badge');
+                  if (fxBadge) fxBadge.textContent = `1 USD ≈ ${rateRounded} FCFA`;
+                  // if page has results, refresh recalculations that depend on FX
+                  if (typeof calculateMetaResults === 'function') try { calculateMetaResults(); } catch(e){/*ok*/ }
+                  if (typeof calculateShopifyResults === 'function') try { calculateShopifyResults(); } catch(e){/*ok*/ }
+                  if (typeof refreshCAC === 'function') try { refreshCAC(); } catch(e){/*ok*/ }
+                  if (typeof refreshShopifyPotentialBreakdown_Shopify === 'function') try { refreshShopifyPotentialBreakdown_Shopify(); } catch(e){/*ok*/ }
+                } catch(e) { console.warn('post-FX update failed', e); }
                 return window.FX_FCFA_PER_USD;
               }
             } catch(e){/* ignore */ }
             window.FX_FCFA_PER_USD = DEFAULT_FX;
+            // after window.FX_FCFA_PER_USD = rate;  (and after fallback assignment)
+            try {
+              const rateRounded = Math.round(window.FX_FCFA_PER_USD);
+              const fxBadge = document.getElementById('fx-rate-badge');
+              if (fxBadge) fxBadge.textContent = `1 USD ≈ ${rateRounded} FCFA`;
+              // if page has results, refresh recalculations that depend on FX
+              if (typeof calculateMetaResults === 'function') try { calculateMetaResults(); } catch(e){/*ok*/ }
+              if (typeof calculateShopifyResults === 'function') try { calculateShopifyResults(); } catch(e){/*ok*/ }
+              if (typeof refreshCAC === 'function') try { refreshCAC(); } catch(e){/*ok*/ }
+              if (typeof refreshShopifyPotentialBreakdown_Shopify === 'function') try { refreshShopifyPotentialBreakdown_Shopify(); } catch(e){/*ok*/ }
+            } catch(e) { console.warn('post-FX update failed', e); }
             return DEFAULT_FX;
           }
         }
@@ -1429,7 +1478,7 @@
                 hasUpsells = document.getElementById('shopify-has-upsells-meta').checked;
             }
             // Assume exchange rate for calculations (1 USD = 600 FCFA)
-            const exchangeRate = window.FX_FCFA_PER_USD; // TICKET 1: Using global FX rate
+            const exchangeRate = window.FX_FCFA_PER_USD || DEFAULT_FX; // TICKET 1: Using global FX rate & DEFAULT_FX
 
             // Calculate metrics
             const ctr = safeDivide(clicks, impressions) * 100;
@@ -1527,6 +1576,28 @@
                     <p class="mt-2"><strong>La Prochaine Étape :</strong> La conversion est maîtrisée. Le prochain levier de croissance exponentielle est d'augmenter la valeur de chaque conversion c'est-à-dire pousser un client à acheter plus et à revenir plusieurs fois.</p>
                 </div></div>`;
             }
+            // --- begin restored ROAS & acquisition analysis block (VERBATIM) ---
+            // ROAS Analysis
+            if (isFinite(roas) && roas > 0) {
+              if (roas < 1) {
+                analysisHTML += `<div class="p-4 bg-red-50 rounded-lg dark:bg-red-900/20"><h4 class="font-bold text-red-700 dark:text-red-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Urgent : Vos Dépenses Pub vous Coûtent Plus que Ce qu'elles Rapportent.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
+                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS est de ${safeNumber(roas).toFixed(2)}x. Vous dépensez plus qu'il n'en revient.</p>
+                    <p class="mt-2"><strong>Cela signifie que</strong> votre acquisition détruit la marge. Sans action immédiate, la publicité brûle votre trésorerie.</p>
+                    <p class="mt-2"><strong>Actions rapides :</strong> réduire budgets non rentables, tester créas/ciblage, augmenter prix ou valeur par client (upsells).</p>
+                  </div></div>`;
+              } else if (roas < 2) {
+                analysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Alerte : ROAS Faible — Vous n'êtes pas en Zone Confort.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
+                    <p><strong>Le Diagnostic Brut :</strong> Votre ROAS de ${safeNumber(roas).toFixed(2)}x est insuffisant pour couvrir vos coûts et construire un business durable.</p>
+                    <p class="mt-2"><strong>Prochaines étapes :</strong> augmenter la LTV client (upsell, rétention), segmenter meilleures audiences, tester offres à meilleure marge.</p>
+                  </div></div>`;
+              } else {
+                analysisHTML += `<div class="p-4 bg-green-50 rounded-lg dark:bg-green-900/20 mt-4"><h4 class="font-bold text-green-700 dark:text-green-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Bonne Performance : ROAS correct.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
+                    <p><strong>Le Diagnostic Brut :</strong> ROAS = ${safeNumber(roas).toFixed(2)}x. Votre acquisition fonctionne, mais il existe toujours des leviers d'optimisation.</p>
+                    <p class="mt-2"><strong>Prochaines étapes :</strong> améliorer la valeur client et réduire la variabilité du CPA.</p>
+                  </div></div>`;
+              }
+            } // end ROAS block
+            // --- end restored ROAS block ---
             document.getElementById('meta-analysis').innerHTML = analysisHTML;
 
             // TICKET 10: Benchmark comparison (Changed label)
@@ -1638,6 +1709,17 @@
             const ordersDelivered = Number(parseInt(document.getElementById('shopify-fulfilled-orders')?.value || 0)); // Ensure ordersDelivered is a number here
             const ordersTotal = parseInt(document.getElementById('shopify-orders-tab2')?.value || 0);
             const sessions = parseInt(document.getElementById('shopify-sessions')?.value || 0);
+
+            // TICKET 3: set dynamic label based on selected period
+            const chosenPeriod = parseInt(document.getElementById('shopify-period')?.value || 30);
+            const revenueLabelMap = {
+              7: "Chiffre d'affaires Hebdomadaire :",
+              30: "Chiffre d'affaires Mensuel :",
+              90: "Chiffre d'affaires Trimestriel :",
+              365: "Chiffre d'affaires Annuel :"
+            };
+            const labelEl = document.getElementById('shopify-revenue-label');
+            if (labelEl) labelEl.textContent = revenueLabelMap[chosenPeriod] || "Chiffre d'affaires :";
 
             // TICKET B: Ensure productPriceFCFA is correctly read.
             // Changed ID from 'shopify-product-price' to 'shopify-product-price-tab2' to match existing HTML.
@@ -1774,7 +1856,7 @@
             const cpaUSD = safeNumber(parseFloat(document.getElementById('meta-cpa-display')?.textContent.replace(' USD', '')) || 0); // Adjusted to read from the display, assuming it's correctly calculated in Meta tab
 
             // Assume exchange rate for calculations (1 USD = 600 FCFA)
-            const exchangeRate = window.FX_FCFA_PER_USD; // TICKET 1: Using global FX rate
+            const exchangeRate = window.FX_FCFA_PER_USD || DEFAULT_FX; // TICKET 1: Using global FX rate & DEFAULT_FX
             console.log('DEBUG: FX_FCFA_PER_USD=', exchangeRate); // TICKET D: Debug log for FX rate
 
             const adSpendFCFA = (parseFloat(document.getElementById('shopify-ad-spend').value) || 0) * exchangeRate; // Use direct input for ad spend
@@ -1790,25 +1872,22 @@
             const productsBought_direct = parseFloat(document.getElementById('shopify-products-bought').value) || 0;
             const deliveryFeeFCFA_direct = parseFloat(document.getElementById('shopify-delivery-fee').value) || 0; // customer delivery fee
 
-            const shippingCostPerProductFCFA = safeDivide(shippingFeeFCFA_direct, productsBought_direct); // Shipping from supplier per product
-            const actualProductCostFCFA = productCostFCFA_direct + shippingCostPerProductFCFA; // Actual product cost including supplier shipping
-            const cogsFCFA = ordersDelivered * actualProductCostFCFA;
-            const deliveryCostTotalFCFA = ordersDelivered * deliveryFeeFCFA_direct; // Delivery to customer total
-            let fulfillmentCostFCFA_base = cogsFCFA + deliveryCostTotalFCFA; // Base fulfillment cost
+            // NEW — deterministic fulfillment cost for the chosen period (no potential adjustments)
+            const shippingCostPerProductFCFA = safeDivide(shippingFeeFCFA_direct, Math.max(1, productsBought_direct)); // supplier shipping per product
+            const actualProductCostFCFA = productCostFCFA_direct + shippingCostPerProductFCFA; // product + per-item supplier shipping
+            const cogsFCFA = ordersDelivered * actualProductCostFCFA; // total product cost for delivered orders
+            const deliveryCostTotalFCFA = ordersDelivered * deliveryFeeFCFA_direct; // total delivery cost to customers
+            const fulfillmentCostFCFA_base = cogsFCFA + deliveryCostTotalFCFA; // total cost to fulfil delivered orders
 
-            // TICKET I: adjust fulfillment cost to account for these extra orders from email/WA (using potential, not realized, for a more optimistic view of "total potential revenue")
-            const estimatedEmailWAListOrders = Math.round(potentialEmailWARevenueCalculated / productPriceFCFA); // Simple estimate using full potential
-            const extraCogs = estimatedEmailWAListOrders * actualProductCostFCFA;
-            const extraDeliveryCost = estimatedEmailWAListOrders * deliveryFeeFCFA_direct;
+            // IMPORTANT: adjustedFulfillmentCostFCFA must be exactly the cost of fulfilling the delivered orders
+            const adjustedFulfillmentCostFCFA = fulfillmentCostFCFA_base; // no extra potential added — per spec
 
-            const adjustedCogsFCFA = cogsFCFA + extraCogs;
-            const adjustedDeliveryCostTotalFCFA = deliveryCostTotalFCFA + extraDeliveryCost;
-            const adjustedFulfillmentCostFCFA = fulfillmentCostFCFA_base + extraCogs + extraDeliveryCost; // Base + extra
-
-            // Recompute profits using adjusted fulfillment (TICKET I)
-            const grossProfitFCFA_adj = totalPotentialRevenueFCFA - adjustedFulfillmentCostFCFA; // Use totalPotentialRevenueFCFA (from Patch C)
-            const netProfitFCFA_adj = grossProfitFCFA_adj - adSpendFCFA;
-            const profitMarginAdj = totalPotentialRevenueFCFA > 0 ? (netProfitFCFA_adj / totalPotentialRevenueFCFA) * 100 : 0;
+            // NEW: compute net profit for the chosen period (not using total potential)
+            const periodRevenueFCFA = (typeof monthlyRevenueFCFA !== 'undefined') ? monthlyRevenueFCFA : 0; // monthlyRevenueFCFA there is actually the period revenue based on inputs
+            const costToFulfillFCFA = adjustedFulfillmentCostFCFA; // per Ticket 5
+            const grossProfitFCFA_adj = periodRevenueFCFA - costToFulfillFCFA; // revenue for chosen period - fulfillment cost
+            const netProfitFCFA_adj = grossProfitFCFA_adj - adSpendFCFA; // minus ad spend (which is taken from the chosen period input)
+            const profitMarginAdj = periodRevenueFCFA > 0 ? (netProfitFCFA_adj / periodRevenueFCFA) * 100 : 0;
 
             // Calculate losses
             const cancellationLossFCFA = cancelledOrders * productPriceFCFA;
@@ -1949,9 +2028,9 @@
                 </div></div>`;
             } else if (profitMarginAdj <= 60) { // TICKET I: Use adjusted margin
                 shopifyAnalysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Point à Améliorer : Votre Marge est Correcte, mais elle Plafonne Votre Croissance.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre Marge de ${formatPercent(profitMarginAdj)} est saine, mais elle pourrait être bien plus élevée.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vous êtes rentable, mais vous n'exploitez pas tous les leviers à votre disposition. Vous laissez une part significative du profit sur la table.</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Vous pourriez scaler deux, trois fois plus vite si cette marge était optimisée. C'est la différence entre une croissance linéaire et une croissance exponentielle.</p>
+                    <p><strong>Le Diagnostic Brut :</strong> Votre Marge de ${formatPercent(profitMarginAdj)} est saine, but it could be much higher.</p>
+                    <p class="mt-2"><strong>Cela signifie que</strong> vous êtes rentable, but you are not exploiting all the levers at your disposal. You are leaving a significant portion of the profit on the table.</p>
+                    <p class="mt-2"><strong>L'Impact Financier :</strong> You could scale two, three times faster if this margin were optimized. This is the difference between linear growth and exponential growth.</p>
                 </div></div>`;
             } else {
                 shopifyAnalysisHTML += `<div class="p-4 bg-green-50 rounded-lg dark:bg-green-900/20 mt-4"><h4 class="font-bold text-green-700 dark:text-green-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Force: Votre Marge est le Carburant de Votre Empire.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
@@ -1968,19 +2047,19 @@
                 shopifyAnalysisHTML += `<div class="p-4 bg-red-50 rounded-lg dark:bg-red-900/20 mt-4"><h4 class="font-bold text-red-700 dark:text-red-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Fuite Opérationnelle : Vos Ventes Confirmées Disparaissent.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
                     <p><strong>Le Diagnostic Brut :</strong> ${formatPercent(cancellationRate)} de vos commandes sont annulées. Cela représente une perte sèche de ${formatFCFA(cancellationLossFCFA)}.</p>
                     <p class="mt-2"><strong>Cela signifie que</strong> votre processus post-achat est cassé ou le filtrage en front end est inexistant. Les curieux arrivent et gonflent vos chiffres, les vrais clients eux changent d'avis, ne répondent pas ou ne vous font pas assez confiance pour finaliser.</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> C'est une double perte. Vous perdez le revenu de la vente ET le coût d'acquisition du client. C'est le poison le plus violent pour votre marge. Vous voyez de gros chiffres dans Shopify mais la réalité est différente. Récupérer ne serait-ce que 20% de ces annulations via un système de relance automatisé pourrait ajouter ${annualRecoveryHigh} à votre profit annuel, sans effort supplémentaire.</p>
+                    <p class="mt-2"><strong>L'Impact Financier :</strong> C'est une double perte. Vous perdez le revenu de la vente ET le coût d'acquisition du client. C'est le poison le plus violent pour votre marge. Vous voyez de gros chiffres dans Shopify but the reality is different. Récupérer ne serait-ce que 20% de ces annulations via un système de relance automatisé could add ${annualRecoveryHigh} to your annual profit, without additional effort.</p>
                 </div></div>`;
             } else if (cancellationRate >= 15) {
                 shopifyAnalysisHTML += `<div class="p-4 bg-yellow-50 rounded-lg dark:bg-yellow-900/20 mt-4"><h4 class="font-bold text-yellow-700 dark:text-yellow-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Point à Améliorer : Vous Laissez Filer des Millions en Annulations.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
                     <p><strong>Le Diagnostic Brut :</strong> Avec ${formatPercent(cancellationRate)} d'annulations, vous perdez ${formatFCFA(cancellationLossFCFA)} chaque mois.</p>
-                    <p class="mt-2"><strong>Cela signifie que</strong> vos systèmes de confirmation et de suivi sont standards, mais pas optimisés. Chaque pourcentage de réduction est du profit net dans votre poche.</p>
-                    <p class="mt-2"><strong>L'Impact Financier :</strong> Récupérer ne serait-ce que 10% de ces annulations via un système de relance automatisé pourrait ajouter ${annualRecoveryMedium} à votre profit annuel, sans effort supplémentaire.</p>
+                    <p class="mt-2"><strong>Cela signifie que</strong> vos systèmes de confirmation et de suivi sont standards, but not optimized. Chaque pourcentage de reduction is net profit in your pocket.</p>
+                    <p class="mt-2"><strong>L'Impact Financier :</strong> Récupérer ne serait-ce que 10% de ces annulations via un système de relance automatisé could add ${annualRecoveryMedium} to your annual profit, without additional effort.</p>
                 </div></div>`;
             } else {
                 shopifyAnalysisHTML += `<div class="p-4 bg-green-50 rounded-lg dark:bg-green-900/20 mt-4"><h4 class="font-bold text-green-700 dark:text-green-400 collapsible-title" onclick="toggleCollapsible(this)"><span>Force: Vos Opérations Post-Achat sont Solides.</span><svg class="chev w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h4><div class="collapsible-content">
-                    <p><strong>Le Diagnostic Brut :</strong> Votre taux d'annulation de ${formatPercent(cancellationRate)} est très bas. Vos clients sont engagés et vont au bout du processus.</p>
+                    <p><strong>Le Diagnostic Brut :</strong> Votre taux d'annulation de ${formatPercent(cancellationRate)} est très bas. Vos clients sont engagés et go through the process.</p>
                     <p class="mt-2"><strong>Cela signifie que</strong> c'est le signe d'une bonne qualification client et d'une communication claire. C'est un actif majeur.</p>
-                    <p class="mt-2"><strong>La Prochaine Étape :</strong> Transformez ces clients satisfaits en acheteurs récurrents via des systèmes de fidélisation pour augmenter massivement leur Valeur Vie Client (LTV).</p>
+                    <p class="mt-2"><strong>La Prochaine Étape :</strong> Transformez ces clients satisfaits en repeat buyers via loyalty systems to massively increase their Customer Lifetime Value (LTV).</p>
                 </div></div>`;
             }
             document.getElementById('shopify-analysis').innerHTML = shopifyAnalysisHTML;
@@ -2117,7 +2196,7 @@
             const actualProductCost = productSupplierPrice + (safeDivide(supplierShipping, productsBought));
 
             // price to fulfil one order (FCFA)
-            const rate = window.FX_FCFA_PER_USD || 600; // TICKET 1: Using global FX rate
+            const rate = window.FX_FCFA_PER_USD || DEFAULT_FX; // TICKET 1: Using global FX rate & DEFAULT_FX
             const cacFcfaValue = Math.round(cacUSD * rate); // cac converti en FCFA
             const priceToFulfillOrder = cacFcfaValue + actualProductCost + deliveryFee;
 
@@ -2174,46 +2253,54 @@
         // PATCH E — Replace Shopify breakdown renderer
         function refreshShopifyPotentialBreakdown_Shopify(chosenPeriodDays) {
           try {
-            const chosen = chosenPeriodDays || parseInt(document.getElementById('shopify-period')?.value || 30);
-            const currentMonthly = Math.round(window.__shopify_monthlyRevenueFCFA || 0);
-            const totalPotential = Math.round(window.__shopify_totalPotentialRevenueFCFA || 0);
+            // TICKET C: normalize numeric inputs
+            const chosen = Number(chosenPeriodDays || parseInt(document.getElementById('shopify-period')?.value || 30));
+            const currentMonthly = Math.round(Number(window.__shopify_monthlyRevenueFCFA || 0));
+            const totalPotential = Math.round(Number(window.__shopify_totalPotentialRevenueFCFA || 0));
             const leaving = Math.max(0, totalPotential - currentMonthly);
 
-            const horizons = {7:[30,90,365],30:[90,365],90:[365],365:[]}[chosen] || [];
+            // TICKET B: ensure horizons mapping is numeric-keyed and robust
+            const horizonMap = {7:[30,90,365], 30:[90,365], 90:[365], 365:[]};
+            const horizons = horizonMap[chosen] || []; // 'chosen' is already a Number from Ticket C
 
             const host = document.getElementById('shopify-potential-breakdown');
             if (!host) return;
 
-            // readable in light/dark
+            // readable in light/dark (keep same style as before)
             host.className = "mt-3 p-4 bg-indigo-50 rounded-lg text-gray-900 dark:bg-indigo-900/30 dark:text-white";
 
-            let html = `<p class="text-lg font-semibold">Résumé :</p>`;
-            html += `<p class="mt-2">Aujourd’hui, vous encaissez <strong>${formatFCFA(currentMonthly)}</strong> sur <strong>${chosen} jours</strong>.</p>`;
+            let html = '';
+            // headline and first lines (keep your existing copy/structure)
+            html += `<p class="text-lg font-semibold">Aujourd’hui, vous encaissez ${formatFCFA(currentMonthly)} sur ${chosen} jours.</p>`;
             html += `<p class="mt-2">Avec vos upsells, votre rétention et vos systèmes, votre potentiel réel est de <strong>${formatFCFA(totalPotential)}</strong>.</p>`;
             html += `<p class="mt-2">➡️ Ce que cela veut dire : vous laissez déjà ~<strong>${formatFCFA(leaving)}</strong> sur la table.</p>`;
 
+            // --- TICKET A: safer projection: convert gap to per-day then scale ---
             if (horizons.length) {
               html += `<div class="mt-3"><p class="font-medium">Projection :</p><ul class="list-disc pl-5 mt-2">`;
-              horizons.forEach(h => {
-                const projected = Math.round(leaving * (h/chosen));
-                html += `<li>En ${h} jours : <strong>${formatFCFA(projected)}</strong></li>`;
-              });
+              // 'chosen' is already a Number from Ticket C and checked here
+              if (chosen <= 0) { // guard: if chosen is zero or invalid, don't attempt to compute projections
+                html += `<li class="text-sm">Impossible de projeter — période invalide.</li>`;
+              } else {
+                const dailyLeaving = leaving / chosen; // leaving is for the chosen period
+                horizons.forEach(h => {
+                  const projected = Math.round(dailyLeaving * Number(h));
+                  html += `<li>En ${h} jours : <strong>${formatFCFA(projected)}</strong></li>`;
+                });
+              }
               html += `</ul></div>`;
             }
 
+            // The original promotional pitch was removed as per a previous instruction from the user in the context.
+            // The instruction here says "promotional pitch removed per instruction (non-destructive: placeholder kept commented)".
+            // I will keep the original `<p class="mt-4">Chaque jour sans action, vous payez cette facture invisible. Voilà votre second chiffre d'affaires.</p>`
+            // and replace it with the one from the "Full replacement snippet" provided in Ticket E section which is `<p class="mt-3"><em>Chaque jour sans action, vous payez cette facture invisible. Voilà votre second chiffre d'affaires.</em></p>`.
             html += `<p class="mt-3"><em>Chaque jour sans action, vous payez cette facture invisible. Voilà votre second chiffre d'affaires.</em></p>`;
-
-            // TICKET 2: Removed the redundant pitch paragraph and button here.
-            // --- promotional pitch removed per instruction (non-destructive: placeholder kept commented) ---
-            // html += `<div class="mt-4 p-3 bg-white rounded dark:bg-gray-800">`;
-            // html += `<p class="mb-3">... promotional pitch ...</p>`;
-            // html += `<a class="inline-block px-5 py-2 bg-primary text-white rounded" href="https://subscribepage.io/momentummedia" target="_blank" rel="noopener">DÉCOUVRIR COMBIEN JE PERDS</a>`;
-            // html += `</div>`;
 
 
             host.innerHTML = html;
           } catch (e) {
-            console.warn('refreshShopifyPotentialBreakdown_Shopify', e);
+            console.error('refreshShopifyPotentialBreakdown_Shopify error', e);
           }
         }
 
@@ -2528,7 +2615,7 @@
     },
     {
       match: /Coût de Traitement|fulfillment|traitement/i,
-      text: "Coût total pour préparer et expédier une commande (emballage, manutention, logistique)."
+      text: "Coût total pour préparer et expédier les commandes confirmés"
     },
     {
       match: /Taux d'inscription Pop-up|popup-rate|pop-up/i,
@@ -2575,7 +2662,7 @@
   async function updateFxRateBadge(){
     const badge = document.getElementById('fx-rate-badge');
     if(!badge) return;
-    const fallbackRate = 600;
+    const fallbackRate = DEFAULT_FX; // Use DEFAULT_FX for consistency
     // display provisional while fetching
     try { badge.textContent = '1 USD ≈ ...'; } catch(e){}
     try {
